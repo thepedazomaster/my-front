@@ -10,14 +10,14 @@ export const CursosTable = ({ del, edit }: Props) => {
     <Table variant="dark" hover>
       <thead>
         <tr>
-          <th>Nombre del Alumno</th>
+          <th>Nombre del Curso</th>
           {edit && <th>Editar</th>}
           {del && <th>Eliminar</th>}
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Juan Pablo Chaparro Vasques</td>
+          <td>Linea de profundizacion</td>
           {edit && <td>Editar</td>}
           {del && <td>Eliminar</td>}
         </tr>

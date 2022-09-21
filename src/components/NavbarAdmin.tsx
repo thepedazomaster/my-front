@@ -1,19 +1,24 @@
 import React from "react";
 import { Button, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const NavbarAdmin = () => {
+  const navigate = useNavigate();
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
       <Navbar.Brand href="#home">Control de alumnos</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link>
-            <Link to={"/Alumnos"}>Listar Alumnos</Link>
+          <Nav.Link
+            onClick={() => {
+              navigate("/Alumnos");
+            }}
+          >
+            Listar Alumnos
           </Nav.Link>
           <Nav.Link>
-            <Link to={"/Alumnos"} className={"linknav"}>
+            <Link to={"/Cursos"} className={"linknav"}>
               Ver cursos
             </Link>
           </Nav.Link>

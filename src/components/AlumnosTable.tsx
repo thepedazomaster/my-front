@@ -11,6 +11,7 @@ export const AlumnosTable = ({ del, edit }: Props) => {
       <thead>
         <tr>
           <th>Nombre del Alumno</th>
+          <th>identificación</th>
           {edit && <th>Editar</th>}
           {del && <th>Eliminar</th>}
         </tr>
@@ -18,6 +19,7 @@ export const AlumnosTable = ({ del, edit }: Props) => {
       <tbody>
         <tr>
           <td>Juan Pablo Chaparro Vasques</td>
+          <td>2131231414</td>
           {edit && <td>Editar</td>}
           {del && <td>Eliminar</td>}
         </tr>
