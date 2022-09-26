@@ -21,7 +21,6 @@ export const NavbarAdmin = () => {
         <Nav className="justify-contend-end">
           <Nav.Item>
             <Button size="lg">Login</Button>
-            {` `}
             <Button variant="danger" size="lg">
               Logout
             </Button>
