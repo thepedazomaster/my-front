@@ -25,7 +25,9 @@ export const NavbarAdmin = () => {
         </Nav>
         <Nav className="justify-contend-end">
           <Nav.Item>
-            <Button size="lg">Login</Button>
+            <Button size="lg" onClick={() => navigate("/Login")}>
+              Login
+            </Button>
             {` `}
             <Button variant="danger" size="lg">
               Logout

@@ -7,6 +7,7 @@ import { CursosTable } from "./components/CursosTable";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import { Inicio } from "./components/Inicio";
+import { RegisterForm } from "./components/forms/RegisterForm";
 
 function App() {
   const { authState } = useContext(AuthContext);
@@ -26,6 +27,7 @@ function App() {
               }
             />
             <Route path="/Alumnos" element={<AlumnosTable />} />
+            <Route path="/Login" element={<RegisterForm />} />
           </Routes>
         </main>
       </div>
