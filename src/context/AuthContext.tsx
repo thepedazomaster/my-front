@@ -25,7 +25,7 @@ interface AuthContextProps {
 
 const authInitialState: AuthState = {
   user: null,
-  isLogged: false,
+  isLogged: true,
   isload: false,
 };
 

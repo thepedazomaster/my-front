@@ -1,7 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavbarAdmin } from "./components/NavbarAdmin";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { AlumnosTable } from "./components/AlumnosTable";
 import { CursosTable } from "./components/CursosTable";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
@@ -22,9 +22,7 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route
               path="/Cursos"
-              element={
-                authState ? <CursosTable /> : <Navigate replace to={"/"} />
-              }
+              element={authState ? <CursosTable /> : <Inicio />}
             />
             <Route path="/Alumnos" element={<AlumnosTable />} />
             <Route path="/Login" element={<RegisterForm />} />

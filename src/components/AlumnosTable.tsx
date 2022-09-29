@@ -7,7 +7,7 @@ interface Props {
 
 export const AlumnosTable = ({ del, edit }: Props) => {
   return (
-    <Table variant="dark" hover>
+    <Table variant="dark" hover className="table-edit">
       <thead>
         <tr>
           <th>Nombre del Alumno</th>
