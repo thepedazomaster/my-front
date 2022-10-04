@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -8,31 +8,38 @@ export const NavbarAdmin = () => {
   const navigate = useNavigate();
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
-      <Navbar.Brand href="#home">Control de alumnos</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">
-          <Nav.Link to={"/Alumnos"} as={Link}>
-            Listar Alumnos
-          </Nav.Link>
-          <Nav.Link to={"/Cursos"} as={Link}>
-            Cursos
-          </Nav.Link>
-        </Nav>
-        <Nav className="justify-contend-end">
-          <Nav.Item>
-            {authState.isLogged ? (
-              <Button variant="danger" size="lg">
-                Logout
-              </Button>
-            ) : (
-              <Button size="lg" onClick={() => navigate("/Login")}>
-                Login
-              </Button>
-            )}
-          </Nav.Item>
-        </Nav>
-      </Navbar.Collapse>
+      <Container>
+        <Navbar.Brand as={Link} to={"/"}>
+          Control de alumnos
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link to={"/Alumnos"} as={Link}>
+              Listar Alumnos
+            </Nav.Link>
+            <Nav.Link to={"/Cursos"} as={Link}>
+              Cursos
+            </Nav.Link>
+            <Nav.Link to={"/RegisterAccount"} as={Link}>
+              Registrar nueva cuenta
+            </Nav.Link>
+          </Nav>
+          <Nav className="justify-contend-end">
+            <Nav.Item>
+              {authState.isLogged ? (
+                <Button variant="danger" size="lg">
+                  Logout
+                </Button>
+              ) : (
+                <Button size="lg" onClick={() => navigate("/Login")}>
+                  Login
+                </Button>
+              )}
+            </Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
     </Navbar>
   );
 };

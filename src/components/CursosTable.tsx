@@ -11,6 +11,8 @@ export const CursosTable = ({ del, edit }: Props) => {
       <thead>
         <tr>
           <th>Nombre del Curso</th>
+          <th>Codigo</th>
+          <th>Creditos</th>
           {edit && <th>Editar</th>}
           {del && <th>Eliminar</th>}
         </tr>
@@ -18,6 +20,8 @@ export const CursosTable = ({ del, edit }: Props) => {
       <tbody>
         <tr>
           <td>Linea de profundizacion</td>
+          <td>ef123213</td>
+          <td>4</td>
           {edit && <td>Editar</td>}
           {del && <td>Eliminar</td>}
         </tr>
