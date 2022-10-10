@@ -9,13 +9,17 @@ type Inputs = {
 
 export const NewAlumnoCurso = () => {
   const { register, handleSubmit } = useForm<Inputs>();
-  const { authState } = useContext(AuthContext);
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   return (
     <Form onSubmit={handleSubmit(onSubmit)} method={"post"} className="login">
       <Form.Group>
         <Form.Label>Cursos disponibles</Form.Label>
-        <Form.Select {...register("addCurso", { required: true })}>
+        <Form.Select
+          {...register("addCurso", {
+            required: true,
+            validate: (value) => parseInt(value) !== 0,
+          })}
+        >
           <option value="0">Seleccione una opcion</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -23,7 +27,7 @@ export const NewAlumnoCurso = () => {
         </Form.Select>
       </Form.Group>
       <Button type="submit" className="boton">
-        {authState.isLogged ? "Registrar" : "Enviar"}
+        Registrar
       </Button>
     </Form>
   );

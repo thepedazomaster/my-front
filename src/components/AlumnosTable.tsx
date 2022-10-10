@@ -1,13 +1,16 @@
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { NewAlumno } from "./forms/NewAlumno";
+import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
+import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
 
 interface Props {
   del?: boolean;
   edit?: boolean;
+  onClickEdit?: () => void;
+  onClickDel?: () => void;
 }
 
-export const AlumnosTable = ({ del, edit }: Props) => {
+export const AlumnosTable = ({ del, edit, onClickEdit, onClickDel }: Props) => {
   return (
     <>
       <Table variant="dark" hover className="table-edit">
@@ -22,13 +25,21 @@ export const AlumnosTable = ({ del, edit }: Props) => {
         <tbody>
           <tr>
             <td>
-              <Link to={"/Cursos"} className="link-tabla">
+              <Link to={`/AlumnoProfile/${1}`} className="link-tabla">
                 Juan Pablo Chaparro Vasques
               </Link>
             </td>
             <td>2131231414</td>
-            {edit && <td>Editar</td>}
-            {del && <td>Eliminar</td>}
+            {edit && (
+              <td>
+                <IconEdit width={25} onClick={onClickEdit} />
+              </td>
+            )}
+            {del && (
+              <td>
+                <IconDel width={25} onClick={onClickDel} />
+              </td>
+            )}
           </tr>
         </tbody>
       </Table>

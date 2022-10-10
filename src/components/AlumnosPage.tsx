@@ -12,7 +12,7 @@ export const AlumnosPage = () => {
         onClick={() => navigate("/NewAlumno")}
       />
       <FilterButton size="50px" />
-      <AlumnosTable />
+      <AlumnosTable edit del />
     </section>
   );
 };
