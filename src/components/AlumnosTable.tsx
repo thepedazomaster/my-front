@@ -2,6 +2,7 @@ import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
+import { useAlumnos } from "../hooks/useAlumnos";
 
 interface Props {
   del?: boolean;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const AlumnosTable = ({ del, edit, onClickEdit, onClickDel }: Props) => {
+  const { AlumnosState } = useAlumnos();
   return (
     <>
       <Table variant="dark" hover className="table-edit">

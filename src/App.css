@@ -47,3 +47,10 @@ main {
   flex-wrap: wrap;
   flex-grow: 1;
 }
+.inicio {
+  flex-grow: 1;
+  font-size: 100px;
+  align-self: center;
+  text-align: center;
+  color: brown;
+}

@@ -14,7 +14,7 @@ interface AuthState {
 }
 interface LogData {
   user: string;
-  pasword: string;
+  pass: string;
 }
 
 interface AuthContextProps {
@@ -25,7 +25,7 @@ interface AuthContextProps {
 
 const authInitialState: AuthState = {
   user: null,
-  isLogged: true,
+  isLogged: false,
   isload: false,
 };
 
@@ -53,8 +53,22 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 
 export const AuthProvider = ({ children }: any) => {
   const [authstate, dispatch] = useReducer(authReducer, authInitialState);
-  const singIn = (data: LogData) => {};
-  const logOut = () => {};
+  const singIn = (data: LogData) => {
+    dispatch({
+      type: "logIn",
+      payload: {
+        user: {
+          id: "1",
+          name: "juan ramiro",
+          rol: "1",
+          email: "ramiro@gmail.com",
+        },
+      },
+    });
+  };
+  const logOut = () => {
+    dispatch({ type: "logOut" });
+  };
   return (
     <AuthContext.Provider value={{ authState: authstate, singIn, logOut }}>
       {children}

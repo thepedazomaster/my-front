@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 export const NavbarAdmin = () => {
-  const { authState } = useContext(AuthContext);
+  const { authState, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
@@ -28,7 +28,7 @@ export const NavbarAdmin = () => {
           <Nav className="justify-contend-end">
             <Nav.Item>
               {authState.isLogged ? (
-                <Button variant="danger" size="lg">
+                <Button variant="danger" size="lg" onClick={() => logOut()}>
                   Logout
                 </Button>
               ) : (

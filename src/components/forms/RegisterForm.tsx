@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
+import { useCuentas } from "../../hooks/useCuentas";
 
 type Inputs =
   | {
@@ -16,9 +17,12 @@ type Inputs =
 
 export const RegisterForm = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
-  const { authState } = useContext(AuthContext);
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { authState, logOut, singIn } = useContext(AuthContext);
+  const { cuentasState } = useCuentas();
 
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    authState.isLogged ? logOut() : singIn(data);
+  };
   const validatePassword = (value: string) => {
     return watch("pass") === value;
   };
@@ -85,9 +89,12 @@ export const RegisterForm = () => {
               })}
             >
               <option value={0}>Seleccione una opción</option>
-              <option value={1}>one</option>
-              <option value={2}>two</option>
-              <option value={3}>tree</option>
+              {cuentasState.length > 0 &&
+                cuentasState.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.cuenta}
+                  </option>
+                ))}
             </Form.Select>
           </Form.Group>
         </>
