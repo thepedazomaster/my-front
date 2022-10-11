@@ -2,14 +2,27 @@ import React, { useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
+import { useCursos } from "../../hooks/useCursos";
+import { useParams } from "react-router-dom";
+import { useAlumnos } from "../../hooks/useAlumnos";
 
 type Inputs = {
   addCurso: string;
 };
+interface Props {
+  submit: () => void;
+}
 
-export const NewAlumnoCurso = () => {
+export const NewAlumnoCurso = ({ submit }: Props) => {
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { cursosState } = useCursos();
+  const { createAlumnosCursos } = useAlumnos({});
+  const params = useParams();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    createAlumnosCursos({ ...data, alumno: params.idUser });
+    submit();
+  };
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} method={"post"} className="login">
       <Form.Group>
@@ -21,9 +34,9 @@ export const NewAlumnoCurso = () => {
           })}
         >
           <option value="0">Seleccione una opcion</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
+          {cursosState.map((item) => (
+            <option value={item.id}>{item.curso}</option>
+          ))}
         </Form.Select>
       </Form.Group>
       <Button type="submit" className="boton">

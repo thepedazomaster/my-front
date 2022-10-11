@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
+import { Cursos } from "../interfaces/interfaceCursos";
 
 export const useCursos = () => {
-  const [cursosState, setCursosState] = useState([]);
+  const [cursosState, setCursosState] = useState<Cursos[]>([]);
   useEffect(() => {
     loadCursos();
   }, []);
@@ -10,9 +11,14 @@ export const useCursos = () => {
   const loadCursos = async () => {
     const resp = await administradorApi.get("/cursos");
     setCursosState(resp.data);
-    console.log(resp.data);
 
     return resp.data;
   };
-  return { cursosState };
+  const createCurso = async (data: any) => {
+    const resp = await administradorApi.post("/cursos", { ...data });
+    loadCursos();
+    return resp.status;
+  };
+
+  return { cursosState, loadCursos, createCurso };
 };

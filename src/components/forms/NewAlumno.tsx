@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
+import { useAlumnos } from "../../hooks/useAlumnos";
+import { useNavigate } from "react-router-dom";
 type Inputs = {
   fname: string;
   sname: string;
@@ -12,7 +14,13 @@ type Inputs = {
 export const NewAlumno = () => {
   const { register, handleSubmit } = useForm<Inputs>();
   const { authState } = useContext(AuthContext);
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { createAlumno } = useAlumnos({});
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    createAlumno({ ...data, profe: authState.user?.id });
+    navigate("/Alumnos");
+  };
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} method={"post"} className="login">
       <Form.Group>
@@ -37,7 +45,7 @@ export const NewAlumno = () => {
         <Form.Label>Primer apellido</Form.Label>
         <Form.Control
           type="text"
-          placeholder="ingrese su contraseña"
+          placeholder="ingrese su primer apellido"
           {...register("flastname", {
             required: true,
           })}
@@ -47,7 +55,7 @@ export const NewAlumno = () => {
         <Form.Label>Segundo apellido</Form.Label>
         <Form.Control
           type="text"
-          placeholder="ingrese su nombre"
+          placeholder="ingrese su segundo apellido"
           {...register("slastname", { required: true })}
         />
       </Form.Group>
@@ -56,7 +64,7 @@ export const NewAlumno = () => {
         <Form.Label>Numero de identificacion</Form.Label>
         <Form.Control
           type="text"
-          placeholder="ingrese su email"
+          placeholder="ingrese su identificacion"
           {...register("identificacion", { required: true })}
         />
       </Form.Group>

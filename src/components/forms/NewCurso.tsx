@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
+import { useCursos } from "../../hooks/useCursos";
+import { useNavigate } from "react-router-dom";
 
 type Inputs = {
   curso: string;
@@ -12,14 +14,19 @@ type Inputs = {
 export const NewCurso = () => {
   const { register, handleSubmit } = useForm<Inputs>();
   const { authState } = useContext(AuthContext);
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { createCurso } = useCursos();
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    createCurso({ ...data });
+    navigate("/Cursos");
+  };
   return (
     <Form onSubmit={handleSubmit(onSubmit)} method={"post"} className="login">
       <Form.Group>
         <Form.Label>Nombre del Curso</Form.Label>
         <Form.Control
           type="text"
-          placeholder="ingrese su nombre"
+          placeholder="ingrese nombre de curso"
           {...register("curso", { required: true })}
         />
       </Form.Group>
@@ -27,7 +34,7 @@ export const NewCurso = () => {
         <Form.Label>Codigo</Form.Label>
         <Form.Control
           type="text"
-          placeholder="ingrese su segundo nombre"
+          placeholder="ingrese el codigo"
           {...register("codigo", {
             required: true,
           })}
@@ -37,7 +44,7 @@ export const NewCurso = () => {
         <Form.Label>creditos</Form.Label>
         <Form.Control
           type="number"
-          placeholder="ingrese su contraseña"
+          placeholder="ingrese el numero de creditos"
           {...register("creditos", {
             required: true,
           })}

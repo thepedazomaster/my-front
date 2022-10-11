@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { AlumnosTable } from "./AlumnosTable";
 import { FilterButton } from "./FilterButton";
 import { ButtonCreate } from "./ButtonCreate";
+import { useAlumnos } from "../hooks/useAlumnos";
 
 export const AlumnosPage = () => {
   const navigate = useNavigate();
+  const { AlumnosState } = useAlumnos({});
   return (
     <section className="page">
       <ButtonCreate
@@ -12,7 +14,7 @@ export const AlumnosPage = () => {
         onClick={() => navigate("/NewAlumno")}
       />
       <FilterButton size="50px" />
-      <AlumnosTable edit del />
+      <AlumnosTable data={AlumnosState} edit del />
     </section>
   );
 };

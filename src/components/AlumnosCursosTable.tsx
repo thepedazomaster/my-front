@@ -2,16 +2,16 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
-import { Cursos } from "../interfaces/interfaceCursos";
+import { AlumnoCurso } from "../interfaces/interfaceAlumnos";
 interface Props {
-  data: Cursos[];
+  data?: AlumnoCurso[];
   del?: boolean;
   edit?: boolean;
   onClickEdit?: () => void;
   onClickDel?: () => void;
 }
 
-export const CursosTable = ({
+export const AlumnosCursosTable = ({
   data,
   del,
   edit,
@@ -30,11 +30,11 @@ export const CursosTable = ({
         </tr>
       </thead>
       <tbody>
-        {data.map((item) => (
+        {data?.map((item) => (
           <tr>
-            <td> {item.curso}</td>
-            <td>{item.codigo}</td>
-            <td>{item.creditos}</td>
+            <td> {item.Curso.curso}</td>
+            <td>{item.Curso.codigo}</td>
+            <td>{item.Curso.creditos}</td>
             {edit && (
               <td>
                 <IconEdit width={25} onClick={onClickEdit} />

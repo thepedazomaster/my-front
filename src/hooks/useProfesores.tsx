@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
+import { Profesores } from "../interfaces/interfaceProfesores";
 
 export const useProfesores = () => {
-  const [profesoresState, setProfesoresState] = useState([]);
+  const [profesoresState, setProfesoresState] = useState<Profesores[]>([]);
   useEffect(() => {
     loadprofesores();
   }, []);
@@ -12,5 +13,10 @@ export const useProfesores = () => {
     setProfesoresState(resp.data);
     return resp.data;
   };
-  return { profesoresState };
+  const createProfesor = async (data: any) => {
+    const resp = await administradorApi.post("/profesores", { ...data });
+    loadprofesores();
+    return resp.status;
+  };
+  return { profesoresState, loadprofesores, createProfesor };
 };

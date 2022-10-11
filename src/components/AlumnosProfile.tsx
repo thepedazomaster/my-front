@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CursosTable } from "./CursosTable";
 import { NewAlumnoCurso } from "./forms/NewAlumnoCurso";
+import { useAlumnos } from "../hooks/useAlumnos";
+import { AlumnosCursosTable } from "./AlumnosCursosTable";
 
 export const AlumnosProfile = () => {
   const params = useParams();
-  useEffect(() => {
-    console.log(params);
-  }, []);
+  const { AlumnoState, fullName, loadAlumnos } = useAlumnos({
+    id: params.idUser,
+  });
+  const navigate = useNavigate();
+  useEffect(() => {}, []);
 
   return (
     <section className="page">
@@ -21,17 +25,17 @@ export const AlumnosProfile = () => {
         <tbody>
           <tr>
             <td>Nombre</td>
-            <td>juan</td>
+            <td>{fullName(AlumnoState)}</td>
           </tr>
           <tr>
             <td>identificacion</td>
-            <td>121231532</td>
+            <td>{AlumnoState?.identificacion}</td>
           </tr>
         </tbody>
       </Table>
       <h2>Cursos registrados</h2>
-      <CursosTable />
-      <NewAlumnoCurso />
+      <AlumnosCursosTable data={AlumnoState?.Alumno_cursos} del />
+      <NewAlumnoCurso submit={() => navigate("/Alumnos")} />
     </section>
   );
 };

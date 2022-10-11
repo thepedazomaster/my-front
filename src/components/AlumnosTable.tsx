@@ -3,16 +3,24 @@ import { Link } from "react-router-dom";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
 import { useAlumnos } from "../hooks/useAlumnos";
+import { Alumnos } from "../interfaces/interfaceAlumnos";
 
 interface Props {
+  data: Alumnos[];
   del?: boolean;
   edit?: boolean;
   onClickEdit?: () => void;
   onClickDel?: () => void;
 }
 
-export const AlumnosTable = ({ del, edit, onClickEdit, onClickDel }: Props) => {
-  const { AlumnosState } = useAlumnos();
+export const AlumnosTable = ({
+  data,
+  del,
+  edit,
+  onClickEdit,
+  onClickDel,
+}: Props) => {
+  const { fullName } = useAlumnos({});
   return (
     <>
       <Table variant="dark" hover className="table-edit">
@@ -25,24 +33,26 @@ export const AlumnosTable = ({ del, edit, onClickEdit, onClickDel }: Props) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <Link to={`/AlumnoProfile/${1}`} className="link-tabla">
-                Juan Pablo Chaparro Vasques
-              </Link>
-            </td>
-            <td>2131231414</td>
-            {edit && (
+          {data.map((item) => (
+            <tr>
               <td>
-                <IconEdit width={25} onClick={onClickEdit} />
+                <Link to={`/AlumnoProfile/${item.id}`} className="link-tabla">
+                  {fullName(item)}
+                </Link>
               </td>
-            )}
-            {del && (
-              <td>
-                <IconDel width={25} onClick={onClickDel} />
-              </td>
-            )}
-          </tr>
+              <td>{item.identificacion}</td>
+              {edit && (
+                <td>
+                  <IconEdit width={25} onClick={onClickEdit} />
+                </td>
+              )}
+              {del && (
+                <td>
+                  <IconDel width={25} onClick={onClickDel} />
+                </td>
+              )}
+            </tr>
+          ))}
         </tbody>
       </Table>
     </>

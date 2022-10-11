@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: any) => {
       type: "logIn",
       payload: {
         user: {
-          id: "1",
+          id: "6",
           name: "juan ramiro",
           rol: "1",
           email: "ramiro@gmail.com",

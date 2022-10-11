@@ -3,6 +3,8 @@ import { Button, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
 import { useCuentas } from "../../hooks/useCuentas";
+import { useProfesores } from "../../hooks/useProfesores";
+import { useNavigate } from "react-router-dom";
 
 type Inputs =
   | {
@@ -17,11 +19,18 @@ type Inputs =
 
 export const RegisterForm = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
-  const { authState, logOut, singIn } = useContext(AuthContext);
+  const { authState, singIn } = useContext(AuthContext);
   const { cuentasState } = useCuentas();
+  const { createProfesor } = useProfesores();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    authState.isLogged ? logOut() : singIn(data);
+    if (authState.isLogged) {
+      createProfesor({ ...data });
+      navigate("/");
+    } else {
+      singIn(data);
+    }
   };
   const validatePassword = (value: string) => {
     return watch("pass") === value;
