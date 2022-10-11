@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
 import { Alumnos } from "../interfaces/interfaceAlumnos";
 
@@ -9,10 +9,8 @@ interface Props {
 export const useAlumnos = ({ id }: Props) => {
   const [AlumnosState, setAlumnosState] = useState<Alumnos[]>([]);
   const [AlumnoState, setAlumnoState] = useState<Alumnos>();
-  useEffect(() => {
-    loadAlumnos();
-  }, []);
-  const loadAlumnos = async () => {
+
+  const loadAlumnos = useCallback(async () => {
     if (!id) {
       const resp = await administradorApi.get("/alumnos");
       setAlumnosState([...resp.data]);
@@ -22,7 +20,11 @@ export const useAlumnos = ({ id }: Props) => {
       setAlumnoState(resp.data);
       return resp.data;
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    loadAlumnos();
+  }, [loadAlumnos]);
 
   const fullName = (alumnos: Alumnos | undefined) => {
     return (
@@ -45,6 +47,16 @@ export const useAlumnos = ({ id }: Props) => {
     loadAlumnos();
     return resp.status;
   };
+  const deleteAlumno = async (idalumno: any) => {
+    const resp = await administradorApi.delete(`/alumnos/${idalumno}`);
+    loadAlumnos();
+    return resp.status;
+  };
+  const deleteAlumnoCurso = async (idalumno: any) => {
+    const resp = await administradorApi.delete(`/alumnosCursos/${idalumno}`);
+    loadAlumnos();
+    return resp.status;
+  };
   return {
     AlumnosState,
     fullName,
@@ -52,5 +64,7 @@ export const useAlumnos = ({ id }: Props) => {
     loadAlumnos,
     createAlumnosCursos,
     createAlumno,
+    deleteAlumno,
+    deleteAlumnoCurso,
   };
 };

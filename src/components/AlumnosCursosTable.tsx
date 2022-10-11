@@ -3,6 +3,8 @@ import { Table } from "react-bootstrap";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
 import { AlumnoCurso } from "../interfaces/interfaceAlumnos";
+import { useAlumnos } from "../hooks/useAlumnos";
+import { useNavigate } from "react-router-dom";
 interface Props {
   data?: AlumnoCurso[];
   del?: boolean;
@@ -18,6 +20,8 @@ export const AlumnosCursosTable = ({
   onClickDel,
   onClickEdit,
 }: Props) => {
+  const { deleteAlumnoCurso } = useAlumnos({});
+  const navigate = useNavigate();
   return (
     <Table variant="dark" hover className="table-edit">
       <thead>
@@ -42,7 +46,13 @@ export const AlumnosCursosTable = ({
             )}
             {del && (
               <td>
-                <IconDel width={25} onClick={onClickDel} />
+                <IconDel
+                  width={25}
+                  onClick={() => {
+                    deleteAlumnoCurso(item.id);
+                    navigate("/Alumnos");
+                  }}
+                />
               </td>
             )}
           </tr>

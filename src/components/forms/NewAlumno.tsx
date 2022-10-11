@@ -6,7 +6,7 @@ import { useAlumnos } from "../../hooks/useAlumnos";
 import { useNavigate } from "react-router-dom";
 type Inputs = {
   fname: string;
-  sname: string;
+  sname?: string;
   flastname: string;
   slastname: string;
   identificacion: string;
@@ -36,9 +36,7 @@ export const NewAlumno = () => {
         <Form.Control
           type="text"
           placeholder="ingrese su segundo nombre"
-          {...register("slastname", {
-            required: true,
-          })}
+          {...register("slastname", {})}
         />
       </Form.Group>
       <Form.Group>

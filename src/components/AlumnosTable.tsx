@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
 import { useAlumnos } from "../hooks/useAlumnos";
@@ -20,7 +20,8 @@ export const AlumnosTable = ({
   onClickEdit,
   onClickDel,
 }: Props) => {
-  const { fullName } = useAlumnos({});
+  const { fullName, deleteAlumno } = useAlumnos({});
+  const navigate = useNavigate();
   return (
     <>
       <Table variant="dark" hover className="table-edit">
@@ -48,7 +49,13 @@ export const AlumnosTable = ({
               )}
               {del && (
                 <td>
-                  <IconDel width={25} onClick={onClickDel} />
+                  <IconDel
+                    width={25}
+                    onClick={() => {
+                      deleteAlumno(item.id);
+                      navigate("/");
+                    }}
+                  />
                 </td>
               )}
             </tr>
