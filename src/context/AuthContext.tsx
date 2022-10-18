@@ -1,9 +1,10 @@
 import { createContext, useReducer } from "react";
+import { useProfesores } from "../hooks/useProfesores";
 
 interface userlog {
-  id: string;
+  id: number;
   name: string;
-  rol: string;
+  rol: number;
   email: string;
 }
 
@@ -53,18 +54,26 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 
 export const AuthProvider = ({ children }: any) => {
   const [authstate, dispatch] = useReducer(authReducer, authInitialState);
+  const { profesoresState } = useProfesores();
   const singIn = (data: LogData) => {
-    dispatch({
-      type: "logIn",
-      payload: {
-        user: {
-          id: "6",
-          name: "juan ramiro",
-          rol: "1",
-          email: "ramiro@gmail.com",
-        },
-      },
+    const user = profesoresState.filter((profesor) => {
+      return profesor.usuario == data.user && profesor.contrasena == data.pass;
     });
+    console.log(user);
+    if (user.length > 0) {
+      const cuenta = user[0];
+      dispatch({
+        type: "logIn",
+        payload: {
+          user: {
+            id: cuenta.id,
+            name: cuenta.nombre,
+            rol: cuenta.idCuenta,
+            email: cuenta.email,
+          },
+        },
+      });
+    }
   };
   const logOut = () => {
     dispatch({ type: "logOut" });

@@ -15,9 +15,11 @@ interface Props {
 
 export const NewAlumnoCurso = ({ submit }: Props) => {
   const { register, handleSubmit } = useForm<Inputs>();
-  const { cursosState } = useCursos();
-  const { createAlumnosCursos } = useAlumnos({});
   const params = useParams();
+  const { createAlumnosCursos, AlumnoCursoNoRep } = useAlumnos({
+    id: params.idUser,
+  });
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     createAlumnosCursos({ ...data, alumno: params.idUser });
     submit();
@@ -34,7 +36,7 @@ export const NewAlumnoCurso = ({ submit }: Props) => {
           })}
         >
           <option value="0">Seleccione una opcion</option>
-          {cursosState.map((item) => (
+          {AlumnoCursoNoRep().map((item) => (
             <option value={item.id}>{item.curso}</option>
           ))}
         </Form.Select>

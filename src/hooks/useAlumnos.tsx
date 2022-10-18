@@ -1,14 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
-import { Alumnos } from "../interfaces/interfaceAlumnos";
+import { Alumnos, AlumnoCurso } from "../interfaces/interfaceAlumnos";
+import { useCursos } from "./useCursos";
+import { Cursos } from "../interfaces/interfaceCursos";
 
 interface Props {
   id?: any | null;
 }
-
+interface AlumnoSearch {
+  nombre: string;
+  identificacion: string;
+}
+const alumnosSearchInitial: AlumnoSearch = {
+  nombre: "",
+  identificacion: "",
+};
 export const useAlumnos = ({ id }: Props) => {
   const [AlumnosState, setAlumnosState] = useState<Alumnos[]>([]);
   const [AlumnoState, setAlumnoState] = useState<Alumnos>();
+  const { cursosState } = useCursos();
 
   const loadAlumnos = useCallback(async () => {
     if (!id) {
@@ -57,6 +67,51 @@ export const useAlumnos = ({ id }: Props) => {
     loadAlumnos();
     return resp.status;
   };
+  const [search, setSearch] = useState<AlumnoSearch>(alumnosSearchInitial);
+
+  const filteredInfo = () => {
+    if (search.nombre.length === 0 && search.identificacion.length === 0) {
+      return AlumnosState;
+    } else if (
+      search.nombre.length !== 0 &&
+      search.identificacion.length === 0
+    ) {
+      return AlumnosState.filter((alumno) =>
+        fullName(alumno).includes(search.nombre)
+      );
+    } else if (
+      search.nombre.length === 0 &&
+      search.identificacion.length !== 0
+    ) {
+      return AlumnosState.filter((alumno) =>
+        alumno.identificacion.includes(search.identificacion)
+      );
+    } else {
+      return AlumnosState.filter(
+        (alumno) =>
+          fullName(alumno).includes(search.nombre) &&
+          alumno.identificacion.includes(search.identificacion)
+      );
+    }
+  };
+  const onSearchName = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch({ ...search, nombre: target.value });
+  };
+  const onSearchId = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch({ ...search, identificacion: target.value });
+  };
+
+  const AlumnoCursoNoRep = (): Cursos[] => {
+    if (AlumnoState) {
+      const cursosAlumno = AlumnoState.Alumno_cursos.map(
+        (alumnoCurso) => alumnoCurso.Curso
+      );
+      return cursosState.filter(
+        (curso) => !cursosAlumno.find((e) => e.id === curso.id)
+      );
+    }
+    return cursosState;
+  };
   return {
     AlumnosState,
     fullName,
@@ -66,5 +121,9 @@ export const useAlumnos = ({ id }: Props) => {
     createAlumno,
     deleteAlumno,
     deleteAlumnoCurso,
+    filteredInfo,
+    onSearchName,
+    onSearchId,
+    AlumnoCursoNoRep,
   };
 };

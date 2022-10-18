@@ -7,6 +7,7 @@ export const useCursos = () => {
   useEffect(() => {
     loadCursos();
   }, []);
+  
 
   const loadCursos = async () => {
     const resp = await administradorApi.get("/cursos");

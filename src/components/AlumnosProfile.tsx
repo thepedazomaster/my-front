@@ -8,7 +8,7 @@ import { AlumnosCursosTable } from "./AlumnosCursosTable";
 
 export const AlumnosProfile = () => {
   const params = useParams();
-  const { AlumnoState, fullName, loadAlumnos } = useAlumnos({
+  const { AlumnoState, fullName } = useAlumnos({
     id: params.idUser,
   });
   const navigate = useNavigate();
