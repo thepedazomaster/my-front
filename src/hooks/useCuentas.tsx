@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
 import { Cuentas } from "../interfaces/interfaceCuentas";
@@ -9,9 +10,12 @@ export const useCuentas = () => {
   }, []);
 
   const loadCuentas = async () => {
-    const resp = await administradorApi.get("/tipocuenta");
-    setCuentasState([...resp.data]);
-    return resp.data;
+    let cancelToken = axios.CancelToken.source().token;
+    try {
+      const resp = await administradorApi.get("/tipocuenta", { cancelToken });
+      setCuentasState([...resp.data]);
+      return resp.data;
+    } catch (error) {}
   };
   return { cuentasState };
 };

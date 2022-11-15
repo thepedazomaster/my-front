@@ -1,12 +1,14 @@
-import { Table } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Form, Table } from "react-bootstrap";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
 import { useAlumnos } from "../hooks/useAlumnos";
 import { Alumnos } from "../interfaces/interfaceAlumnos";
+import { ButtonCreate } from "./ButtonCreate";
+import { FilterButton } from "./FilterButton";
 
 interface Props {
-  data: Alumnos[];
   del?: boolean;
   edit?: boolean;
   onClickEdit?: () => void;
@@ -14,16 +16,44 @@ interface Props {
 }
 
 export const AlumnosTable = ({
-  data,
   del,
   edit,
-  onClickEdit,
-  onClickDel,
+  onClickEdit = () => {},
+  onClickDel = () => {},
 }: Props) => {
-  const { fullName, deleteAlumno } = useAlumnos({});
+  const {
+    fullName,
+    deleteAlumno,
+    onSearchName,
+    onSearchId,
+    alunosFilterState,
+  } = useAlumnos({});
+  const [dataState, setDataState] = useState<Alumnos[]>([]);
   const navigate = useNavigate();
+
   return (
     <>
+      <ButtonCreate
+        tittle="Crear alumno"
+        onClick={() => navigate("/NewAlumno")}
+      />
+      <Form.Group>
+        <Form.Label>Nombre</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="ingrese el nombre"
+          onChange={onSearchName}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>identificacion</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="ingrese la identificacion"
+          onChange={onSearchId}
+        />
+      </Form.Group>
+      <FilterButton size="50px" />
       <Table variant="dark" hover className="table-edit">
         <thead>
           <tr>
@@ -34,8 +64,8 @@ export const AlumnosTable = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <tr>
+          {alunosFilterState.map((item, i) => (
+            <tr key={i}>
               <td>
                 <Link to={`/AlumnoProfile/${item.id}`} className="link-tabla">
                   {fullName(item)}
@@ -44,7 +74,13 @@ export const AlumnosTable = ({
               <td>{item.identificacion}</td>
               {edit && (
                 <td>
-                  <IconEdit width={25} onClick={onClickEdit} />
+                  <IconEdit
+                    width={25}
+                    onClick={() => {
+                      onClickEdit();
+                      navigate(`/AlumnoUpdate/${item.id}`);
+                    }}
+                  />
                 </td>
               )}
               {del && (
@@ -52,8 +88,8 @@ export const AlumnosTable = ({
                   <IconDel
                     width={25}
                     onClick={() => {
+                      onClickDel();
                       deleteAlumno(item.id);
-                      navigate("/");
                     }}
                   />
                 </td>

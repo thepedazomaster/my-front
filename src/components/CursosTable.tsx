@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table } from "react-bootstrap";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
@@ -18,6 +18,7 @@ export const CursosTable = ({
   onClickDel,
   onClickEdit,
 }: Props) => {
+  const [dataState, setDataState] = useState<Cursos[]>([]);
   return (
     <Table variant="dark" hover className="table-edit">
       <thead>

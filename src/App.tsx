@@ -53,6 +53,10 @@ export const App = () => {
             path="/AlumnoProfile/:idUser"
             element={authState.isLogged ? <AlumnosProfile /> : <Inicio />}
           />
+          <Route
+            path="/AlumnoUpdate/:idUser"
+            element={authState.isLogged ? <NewAlumno update /> : <Inicio />}
+          />
         </Routes>
       </main>
     </div>

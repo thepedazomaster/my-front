@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
 import { Profesores } from "../interfaces/interfaceProfesores";
@@ -9,9 +10,13 @@ export const useProfesores = () => {
   }, []);
 
   const loadprofesores = async () => {
-    const resp = await administradorApi.get("/profesores");
-    setProfesoresState(resp.data);
-    return resp.data;
+    let cancelToken = axios.CancelToken.source().token;
+
+    try {
+      const resp = await administradorApi.get("/profesores", { cancelToken });
+      setProfesoresState(resp.data);
+      return resp.data;
+    } catch (error) {}
   };
   const createProfesor = async (data: any) => {
     const resp = await administradorApi.post("/profesores", { ...data });

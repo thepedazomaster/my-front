@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
 import { Cursos } from "../interfaces/interfaceCursos";
@@ -7,16 +8,25 @@ export const useCursos = () => {
   useEffect(() => {
     loadCursos();
   }, []);
-  
 
   const loadCursos = async () => {
-    const resp = await administradorApi.get("/cursos");
-    setCursosState(resp.data);
+    let cancelToken = axios.CancelToken.source().token;
 
-    return resp.data;
+    try {
+      const resp = await administradorApi.get("/cursos", { cancelToken });
+      setCursosState(resp.data);
+
+      return resp.data;
+    } catch (error) {}
   };
   const createCurso = async (data: any) => {
-    const resp = await administradorApi.post("/cursos", { ...data });
+    let cancelToken = axios.CancelToken.source().token;
+
+    const resp = await administradorApi.post(
+      "/cursos",
+      { ...data },
+      { cancelToken }
+    );
     loadCursos();
     return resp.status;
   };

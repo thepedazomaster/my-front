@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
@@ -14,13 +14,18 @@ interface Props {
 }
 
 export const AlumnosCursosTable = ({
-  data,
+  data = [],
   del,
   edit,
   onClickDel,
   onClickEdit,
 }: Props) => {
   const { deleteAlumnoCurso } = useAlumnos({});
+  const [dataState, setDataState] = useState<AlumnoCurso[]>([]);
+  useEffect(() => {
+    setDataState([...data]);
+  }, [data]);
+
   const navigate = useNavigate();
   return (
     <Table variant="dark" hover className="table-edit">
@@ -34,7 +39,7 @@ export const AlumnosCursosTable = ({
         </tr>
       </thead>
       <tbody>
-        {data?.map((item) => (
+        {dataState?.map((item) => (
           <tr>
             <td> {item.Curso.curso}</td>
             <td>{item.Curso.codigo}</td>
