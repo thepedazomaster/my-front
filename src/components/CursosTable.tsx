@@ -1,10 +1,11 @@
-import React, { useState } from "react";
 import { Table } from "react-bootstrap";
 import { ReactComponent as IconEdit } from "../assets/img/editarimg.svg";
 import { ReactComponent as IconDel } from "../assets/img/eliminarimg.svg";
-import { Cursos } from "../interfaces/interfaceCursos";
+import { FilterButton } from "./FilterButton";
+import { ButtonCreate } from "./ButtonCreate";
+import { useNavigate } from "react-router-dom";
+import { useCursos } from "../hooks/useCursos";
 interface Props {
-  data: Cursos[];
   del?: boolean;
   edit?: boolean;
   onClickEdit?: () => void;
@@ -12,43 +13,61 @@ interface Props {
 }
 
 export const CursosTable = ({
-  data,
   del,
   edit,
-  onClickDel,
+  onClickDel = () => {},
   onClickEdit,
 }: Props) => {
-  const [dataState, setDataState] = useState<Cursos[]>([]);
+  const navigate = useNavigate();
+  const { cursosState, deleteCurso } = useCursos({});
   return (
-    <Table variant="dark" hover className="table-edit">
-      <thead>
-        <tr>
-          <th>Nombre del Curso</th>
-          <th>Codigo</th>
-          <th>Creditos</th>
-          {edit && <th>Editar</th>}
-          {del && <th>Eliminar</th>}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item) => (
+    <>
+      <ButtonCreate
+        tittle="Crear curso"
+        onClick={() => navigate("/NewCurso")}
+      />
+      <FilterButton size="50px" />
+      <Table variant="dark" hover className="table-edit">
+        <thead>
           <tr>
-            <td> {item.curso}</td>
-            <td>{item.codigo}</td>
-            <td>{item.creditos}</td>
-            {edit && (
-              <td>
-                <IconEdit width={25} onClick={onClickEdit} />
-              </td>
-            )}
-            {del && (
-              <td>
-                <IconDel width={25} onClick={onClickDel} />
-              </td>
-            )}
+            <th>Nombre del Curso</th>
+            <th>Codigo</th>
+            <th>Creditos</th>
+            {edit && <th>Editar</th>}
+            {del && <th>Eliminar</th>}
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {cursosState.map((item) => (
+            <tr>
+              <td> {item.curso}</td>
+              <td>{item.codigo}</td>
+              <td>{item.creditos}</td>
+              {edit && (
+                <td>
+                  <IconEdit
+                    width={25}
+                    onClick={() => {
+                      navigate(`/CursoUpdate/${item.id}`);
+                    }}
+                  />
+                </td>
+              )}
+              {del && (
+                <td>
+                  <IconDel
+                    width={25}
+                    onClick={() => {
+                      deleteCurso(item.id);
+                      onClickDel();
+                    }}
+                  />
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 };

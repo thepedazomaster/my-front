@@ -57,9 +57,10 @@ export const AuthProvider = ({ children }: any) => {
   const { profesoresState } = useProfesores();
   const singIn = (data: LogData) => {
     const user = profesoresState.filter((profesor) => {
-      return profesor.usuario == data.user && profesor.contrasena == data.pass;
+      return (
+        profesor.usuario === data.user && profesor.contrasena === data.pass
+      );
     });
-    console.log(user);
     if (user.length > 0) {
       const cuenta = user[0];
       dispatch({

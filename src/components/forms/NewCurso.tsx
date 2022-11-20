@@ -1,25 +1,37 @@
-import React, { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
 import { useCursos } from "../../hooks/useCursos";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Inputs = {
   curso: string;
   codigo: string;
   creditos: number;
 };
+interface Props {
+  update?: boolean;
+}
 
-export const NewCurso = () => {
-  const { register, handleSubmit } = useForm<Inputs>();
+export const NewCurso = ({ update }: Props) => {
+  const { register, handleSubmit, setValue } = useForm<Inputs>();
   const { authState } = useContext(AuthContext);
-  const { createCurso } = useCursos();
+  const params = useParams();
+  const { createCurso, cursoState } = useCursos({ id: params.id });
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     createCurso({ ...data });
     navigate("/Cursos");
   };
+  useEffect(() => {
+    if (cursoState?.id) {
+      setValue("curso", cursoState?.curso);
+      setValue("codigo", cursoState?.codigo);
+      setValue("creditos", cursoState?.creditos);
+    }
+  }, [cursoState, setValue]);
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} method={"post"} className="login">
       <Form.Group>

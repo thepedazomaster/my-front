@@ -2,7 +2,6 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavbarAdmin } from "./components/NavbarAdmin";
 import { Route, Routes } from "react-router-dom";
-import { CursosTable } from "./components/CursosTable";
 import { useContext } from "react";
 import { Inicio } from "./components/Inicio";
 import { RegisterForm } from "./components/forms/RegisterForm";
@@ -22,6 +21,7 @@ export const App = () => {
       <header>
         <NavbarAdmin />
       </header>
+
       <main>
         <Routes>
           <Route path="/" element={<Inicio />} />
@@ -56,6 +56,10 @@ export const App = () => {
           <Route
             path="/AlumnoUpdate/:idUser"
             element={authState.isLogged ? <NewAlumno update /> : <Inicio />}
+          />
+          <Route
+            path="/CursoUpdate/:id"
+            element={authState.isLogged ? <NewCurso update /> : <Inicio />}
           />
         </Routes>
       </main>

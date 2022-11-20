@@ -15,18 +15,29 @@ interface Props {
   update?: boolean;
 }
 export const NewAlumno = ({ update }: Props) => {
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, setValue } = useForm<Inputs>();
   const { authState } = useContext(AuthContext);
   const params = useParams();
-  const { createAlumno, AlumnoState } = useAlumnos({ id: params.idUser });
+  const { createAlumno, AlumnoState, updateAlumno } = useAlumnos({
+    id: params.idUser,
+  });
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    createAlumno({ ...data, profe: authState.user?.id });
+    update
+      ? updateAlumno({ ...data }, params?.idUser)
+      : createAlumno({ ...data, profe: authState.user?.id });
     navigate("/Alumnos");
   };
+
   useEffect(() => {
-    console.log(AlumnoState?.segundo_Apellido);
-  }, [AlumnoState]);
+    if (AlumnoState?.id) {
+      setValue("fname", AlumnoState.primer_Nombre);
+      setValue("sname", AlumnoState.segundo_Nombre);
+      setValue("flastname", AlumnoState.primer_Apellido);
+      setValue("slastname", AlumnoState.segundo_Apellido);
+      setValue("identificacion", AlumnoState.identificacion);
+    }
+  }, [AlumnoState, setValue]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} method={"post"} className="login">
@@ -35,7 +46,9 @@ export const NewAlumno = ({ update }: Props) => {
         <Form.Control
           type="text"
           placeholder="ingrese su nombre"
-          {...register("fname", { required: true })}
+          {...register("fname", {
+            required: true,
+          })}
         />
       </Form.Group>
 

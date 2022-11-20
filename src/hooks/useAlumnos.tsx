@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import administradorApi from "../assets/connection";
-import { Alumnos, AlumnoCurso } from "../interfaces/interfaceAlumnos";
+import { Alumnos } from "../interfaces/interfaceAlumnos";
 import { useCursos } from "./useCursos";
 import { Cursos } from "../interfaces/interfaceCursos";
 import axios from "axios";
@@ -19,7 +19,7 @@ const alumnosSearchInitial: AlumnoSearch = {
 export const useAlumnos = ({ id }: Props) => {
   const [AlumnosState, setAlumnosState] = useState<Alumnos[]>([]);
   const [AlumnoState, setAlumnoState] = useState<Alumnos>();
-  const { cursosState } = useCursos();
+  const { cursosState } = useCursos({});
   const [search, setSearch] = useState<AlumnoSearch>(alumnosSearchInitial);
   const [alunosFilterState, setAlunosFilterState] = useState<Alumnos[]>([]);
 
@@ -39,6 +39,7 @@ export const useAlumnos = ({ id }: Props) => {
       }
     } catch (error) {}
   }, [id]);
+
   const filteredInfo = useCallback(() => {
     if (search.nombre.length === 0 && search.identificacion.length === 0) {
       setAlunosFilterState([...AlumnosState]);
@@ -106,8 +107,9 @@ export const useAlumnos = ({ id }: Props) => {
     loadAlumnos();
     return resp.status;
   };
-  const updateAlumno = async (data: any) => {
-    const resp = await administradorApi.post("/alumnos", { ...data });
+
+  const updateAlumno = async (data: any, id: string | undefined) => {
+    const resp = await administradorApi.put(`/alumnos/${id}`, { ...data });
     loadAlumnos();
     return resp.status;
   };
@@ -119,12 +121,12 @@ export const useAlumnos = ({ id }: Props) => {
   };
   const deleteAlumnoCurso = async (idalumno: any) => {
     const resp = await administradorApi.delete(`/alumnosCursos/${idalumno}`);
-    loadAlumnos();
+    await loadAlumnos();
     return resp.status;
   };
 
   const onSearchName = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch({ ...search, nombre: target.value });
+    setSearch({ ...search, nombre: target.value.toLowerCase() });
   };
 
   const onSearchId = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,6 +156,7 @@ export const useAlumnos = ({ id }: Props) => {
     deleteAlumno,
     deleteAlumnoCurso,
     filteredInfo,
+    updateAlumno,
     onSearchName,
     onSearchId,
     AlumnoCursoNoRep,
